@@ -2,8 +2,45 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.MVVMArchitecture" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#111827</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="customBackgroundColor">#FFFFFF</item>
+        <item name="colorPrimaryContainer">#f6f5f3</item>
+    </style>
+    <attr name="customBackgroundColor" format="color" />
+    <attr name="colorPrimaryContainer" format="color" />
+    <style name="Theme.MVVMArchitecture" parent="Base.Theme.MVVMArchitecture" />
+    <style name="bottomNavStyle" parent="Widget.Material3.BottomNavigationView">
+
+        <!-- Background -->
+        <item name="android:background">@color/white</item>
+
+        <!-- Selected item color -->
+        <item name="itemIconTint">@color/bottom_nav_colors</item>
+        <item name="indicatorColor">@color/bottom_nav_colors</item>
+        <item name="itemActiveIndicatorStyle">@style/BottomNavActiveIndicator</item>
+
+    </style>
+    <style name="BottomNavActiveIndicator">
+
+        <!-- Light green -->
+        <item name="android:color">#DFF5E1</item>
+
+        <!-- Proper pill size -->
+        <item name="android:width">64dp</item>
+        <item name="android:height">32dp</item>
+
+        <!-- Rounded pill -->
+        <item name="shapeAppearance">@style/BottomNavIndicatorShape</item>
+
     </style>
 
-    <style name="Theme.MVVMArchitecture" parent="Base.Theme.MVVMArchitecture" />
+    <style name="BottomNavIndicatorShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="backgroundStyle">
+        <item name="colorPrimary">#111827</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+    </style>
 </resources>

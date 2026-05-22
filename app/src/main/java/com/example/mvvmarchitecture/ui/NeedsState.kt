@@ -20,4 +20,12 @@ sealed class NeedsState {
     data class Error(
         val message: String
     ) : NeedsState()
+
+    data class Failure(
+        val message: String
+    ) : NeedsState()
+
+    data class Exception(
+        val message: String
+    ) : NeedsState()
 }

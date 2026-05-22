@@ -9,6 +9,7 @@ import com.example.mvvmarchitecture.repository.LoginRepository
 import com.example.mvvmarchitecture.databinding.ActivityLoginBinding
 import com.example.mvvmarchitecture.services.RetrofitClient
 import com.example.mvvmarchitecture.ui.LoginState
+import com.example.mvvmarchitecture.ui.NeedsState
 import com.example.mvvmarchitecture.viewmodel.LoginViewModel
 
 class LoginActivity : AppCompatActivity() {
@@ -39,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
         viewModel.loginState.observe(this) { state ->
 
             when (state) {
-                is LoginState.Loading -> {
+                is NeedsState.Success -> {
                     binding.progressBar.visibility = View.VISIBLE
                 }
 
