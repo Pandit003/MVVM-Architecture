@@ -15,13 +15,34 @@ import com.example.mvvmarchitecture.utils.common
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class NeedsViewModel : ViewModel() {
 
     private val _items = MutableStateFlow<List<ItemDTO>>(emptyList())
+    // Keep internal list for filtering
     val items = _items.asStateFlow()
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
+    // Filtered items based on search query
+    val filteredItems: StateFlow<List<ItemDTO>> = combine(_items, _searchQuery) { items, query ->
+        if (query.isBlank()) {
+            items
+        } else {
+            items.filter { item ->
+                item.name?.contains(query, ignoreCase = true) == true ||
+                item.category?.contains(query, ignoreCase = true) == true
+            }
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
     val repository = ItemRepository(RetrofitClient.apiService)
     private val _needsState = MutableLiveData<NeedsState>()
     val needState: LiveData<NeedsState> = _needsState
@@ -30,10 +51,14 @@ class NeedsViewModel : ViewModel() {
 
     private val _saveSuccess = MutableLiveData<Boolean>()
     val saveSuccess: LiveData<Boolean> = _saveSuccess
+
+    fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
+    }
+
     fun getAllItems() {
         viewModelScope.launch {
             try {
-                // Assuming a request similar to addItem; adjust if needed (e.g., empty ItemDTO or specific auth request)
                 val result = repository.getAllItems()
                 result.onSuccess { item ->
                     if (item.type == EndpointConstants.Exception) {
@@ -50,11 +75,7 @@ class NeedsViewModel : ViewModel() {
                             Gson().toJson(item.entityObject),
                             type
                         )
-                        _items.value = itemList  // Update the StateFlow with fetched items
-                        Log.d("SIZE", itemList.size.toString())
-                        itemList.forEach {
-                            Log.d("ITEM NAME", it.name.toString())
-                        }
+                        _items.value = itemList
                     }
                 }
                 result.onFailure {
@@ -66,60 +87,29 @@ class NeedsViewModel : ViewModel() {
         }
     }
     fun addItem(data: ItemDTO) {
-
         viewModelScope.launch {
-
             _isLoading.value = true
-
             try {
-
-                val result =
-                    repository.insertItems(
-                        common().buildLoginRequest(data)
-                    )
-
+                val result = repository.insertItems(common().buildLoginRequest(data))
                 result.onSuccess { item ->
-
                     if (item.type!!.equals("Exception")) {
-
-                        _needsState.value =
-                            NeedsState.Failure(
-                                item.wmsMessages.toString()
-                            )
-
+                        _needsState.value = NeedsState.Failure(item.wmsMessages.toString())
                     } else {
-
                         val type = object : TypeToken<List<ItemDTO>>() {}.type
-
-                        val itemList: List<ItemDTO> =
-                            Gson().fromJson(
-                                Gson().toJson(item.entityObject),
-                                type
-                            )
-
+                        val itemList: List<ItemDTO> = Gson().fromJson(
+                            Gson().toJson(item.entityObject),
+                            type
+                        )
                         _items.value = itemList
-
                         _saveSuccess.value = true
                     }
                 }
-
                 result.onFailure {
-
-                    _needsState.value =
-                        NeedsState.Failure(
-                            it.message ?: "Failed to add item"
-                        )
+                    _needsState.value = NeedsState.Failure(it.message ?: "Failed to add item")
                 }
-
             } catch (e: Exception) {
-
-                _needsState.value =
-                    NeedsState.Failure(
-                        e.message ?: "Something went wrong"
-                    )
-
+                _needsState.value = NeedsState.Failure(e.message ?: "Something went wrong")
             } finally {
-
                 _isLoading.value = false
             }
         }
