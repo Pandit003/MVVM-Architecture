@@ -14,7 +14,7 @@ object RetrofitClient {
         .callTimeout(50, TimeUnit.SECONDS) // total timeout for the whole call
         .build()
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.1.140:13400/")
+        .baseUrl("http://192.168.1.145:13400/")
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

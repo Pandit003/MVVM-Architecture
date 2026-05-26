@@ -19,15 +19,14 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import com.example.mvvmarchitecture.R
-import com.example.mvvmarchitecture.model.ItemDTO
+import com.example.mvvmarchitecture.model.ReceivedItemDTO
 import com.example.mvvmarchitecture.viewmodel.NeedsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.switchmaterial.SwitchMaterial
-import java.time.LocalDateTime
 
 class AddItemBottomSheet(
-    private val existingItem: ItemDTO? = null,
-    private val onSave: (ItemDTO) -> Unit
+    private val existingItem: ReceivedItemDTO? = null,
+    private val onSave: (ReceivedItemDTO) -> Unit
 ) : BottomSheetDialogFragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -87,7 +86,7 @@ class AddItemBottomSheet(
         existingItem?.let {
             tvTitle.text = "Edit Item"
             btnSave.text = "Update"
-            etName.setText(it.name)
+            etName.setText(it.ItemName)
             etQty.setText(it.requiredQty.toString())
             etCost.setText(it.cost.toString())
 
@@ -147,8 +146,8 @@ class AddItemBottomSheet(
             val selectedPriorityId = radioGroup.checkedRadioButtonId
             val selectedPriority = view.findViewById<RadioButton>(selectedPriorityId)?.text?.toString() ?: "Low"
 
-            val data = ItemDTO(
-                name = name,
+            val data = ReceivedItemDTO(
+                ItemName = name,
                 requiredQty = qty,
                 unit = spinnerUnit.selectedItem.toString(),
                 time = "",

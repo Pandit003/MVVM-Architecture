@@ -5,21 +5,16 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.adapter.InventoryAdapter
-import com.example.mvvmarchitecture.model.ItemDTO
-import com.example.mvvmarchitecture.ui.LoginState
+import com.example.mvvmarchitecture.model.ReceivedItemDTO
 import com.example.mvvmarchitecture.ui.NeedsState
 import com.example.mvvmarchitecture.utils.AddItemBottomSheet
 import com.example.mvvmarchitecture.utils.common
@@ -94,14 +89,14 @@ class NeedsFragment : Fragment(R.layout.fragment_needs), InventoryAdapter.OnItem
     }
 
     override fun onItemClick(
-        item: ItemDTO,
+        item: ReceivedItemDTO,
         position: Int
     ) {
         AddItemBottomSheet(item) { updatedData ->
-            Log.d("ItemUpdate", "Updated: ${updatedData.name}")
+            Log.d("ItemUpdate", "Updated: ${updatedData.ItemName}")
             updatedData.isUpdate = "1"
-            updatedData.id = item.id
-            updatedData.itemId = item.id
+            updatedData.ReceiveId = item.ReceiveId
+            updatedData.itemId = item.itemId
             viewModel.addItem(updatedData)
         }.show(parentFragmentManager, "Update Item")
     }

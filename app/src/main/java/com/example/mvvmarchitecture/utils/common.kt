@@ -9,17 +9,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.constant.EndpointConstants
-import com.example.mvvmarchitecture.model.ItemDTO
-import com.example.mvvmarchitecture.model.LoginUserDTO
+import com.example.mvvmarchitecture.model.ExpenseItemDTO
+import com.example.mvvmarchitecture.model.ReceivedItemDTO
 import com.example.mvvmarchitecture.model.WMSCoreAuthentication
 import com.example.mvvmarchitecture.model.WMSCoreMessage
 import com.google.android.material.card.MaterialCardView
 
 class common {
-    public fun buildLoginRequest(data: ItemDTO): WMSCoreMessage {
+    public fun buildReceiveRequest(data: ReceivedItemDTO): WMSCoreMessage {
         val message = WMSCoreMessage()
         val token = WMSCoreAuthentication()
 
@@ -27,23 +26,51 @@ class common {
         token.userId = "1"
         token.loginTimeStamp = System.currentTimeMillis().toString()
 
-        val itemDto = ItemDTO()
-        itemDto.id = data.id
-        itemDto.name = data.name
-        itemDto.requiredQty = data.requiredQty
-        itemDto.availableQty = data.availableQty
-        itemDto.unit = data.unit
-        itemDto.time = data.time
-        itemDto.category = data.category
-        itemDto.priority = data.priority
-        itemDto.receiveQty = data.receiveQty
-        itemDto.totalCost = data.totalCost
-        itemDto.isUpdate = data.isUpdate
+/*
+        val receivedItemDto = ReceivedItemDTO()
+        receivedItemDto.ReceiveId = data.ReceiveId
+        receivedItemDto.itemId = data.itemId
+        receivedItemDto.name = data.name
+        receivedItemDto.requiredQty = data.requiredQty
+        receivedItemDto.availableQty = data.availableQty
+        receivedItemDto.unit = data.unit
+        receivedItemDto.time = data.time
+        receivedItemDto.category = data.category
+        receivedItemDto.priority = data.priority
+        receivedItemDto.receiveQty = data.receiveQty
+        receivedItemDto.totalCost = data.totalCost
+        receivedItemDto.isUpdate = data.isUpdate
 
+*/
 
         message.type = EndpointConstants.ItemDTO
         message.authToken = token
-        message.entityObject = itemDto
+        message.entityObject = data
+
+        return message
+    }
+    public fun buildExpenseRequest(data: ExpenseItemDTO): WMSCoreMessage {
+        val message = WMSCoreMessage()
+        val token = WMSCoreAuthentication()
+
+        token.authKey = "device_serial"
+        token.userId = "1"
+        token.loginTimeStamp = System.currentTimeMillis().toString()
+
+        val expenseItemDTO = ExpenseItemDTO()
+        expenseItemDTO.expenseId = data.expenseId
+        expenseItemDTO.itemId = data.itemId
+        expenseItemDTO.ItemName = data.ItemName
+        expenseItemDTO.availableQty = data.availableQty
+        expenseItemDTO.unit = data.unit
+        expenseItemDTO.expenseTime = data.expenseTime
+        expenseItemDTO.category = data.category
+        expenseItemDTO.createdBy = data.createdBy
+
+
+        message.type = EndpointConstants.ExpenseDTO
+        message.authToken = token
+        message.entityObject = data
 
         return message
     }

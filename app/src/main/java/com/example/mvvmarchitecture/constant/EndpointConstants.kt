@@ -1,7 +1,7 @@
 package com.example.mvvmarchitecture.constant
 
 enum class EndpointConstants {
-    None, LoginUserDTO,ItemDTO, ProfileDTO, Inbound, PutAwayDTO, Inventory, Exception, CycleCount, Outbound, DenestingDTO, HouseKeepingDTO, ScanDTO, StockTakeDTO, PackingDTO, ValidateEanDTO, Transfers;
+    None, LoginUserDTO,ItemDTO, Exception,ExpenseDTO,GetDataDTO;
 
     enum class ScanType {
         Unloading, Putaway, Picking, Loading, DeNesting, Assortment

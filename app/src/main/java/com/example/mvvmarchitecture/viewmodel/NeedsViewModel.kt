@@ -6,9 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mvvmarchitecture.constant.EndpointConstants
-import com.example.mvvmarchitecture.model.ItemDTO
+import com.example.mvvmarchitecture.model.GetDataDTO
+import com.example.mvvmarchitecture.model.ReceivedItemDTO
 import com.example.mvvmarchitecture.model.WMSExceptionMessage
-import com.example.mvvmarchitecture.repository.ItemRepository
+import com.example.mvvmarchitecture.repository.ReceiveRepository
 import com.example.mvvmarchitecture.services.RetrofitClient
 import com.example.mvvmarchitecture.ui.NeedsState
 import com.example.mvvmarchitecture.utils.common
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 
 class NeedsViewModel : ViewModel() {
 
-    private val _items = MutableStateFlow<List<ItemDTO>>(emptyList())
+    private val _items = MutableStateFlow<List<ReceivedItemDTO>>(emptyList())
     // Keep internal list for filtering
     val items = _items.asStateFlow()
 
@@ -32,18 +33,18 @@ class NeedsViewModel : ViewModel() {
     val searchQuery = _searchQuery.asStateFlow()
 
     // Filtered items based on search query
-    val filteredItems: StateFlow<List<ItemDTO>> = combine(_items, _searchQuery) { items, query ->
+    val filteredItems: StateFlow<List<ReceivedItemDTO>> = combine(_items, _searchQuery) { items, query ->
         if (query.isBlank()) {
             items
         } else {
             items.filter { item ->
-                item.name?.contains(query, ignoreCase = true) == true ||
+                item.ItemName?.contains(query, ignoreCase = true) == true ||
                 item.category?.contains(query, ignoreCase = true) == true
             }
         }
     }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
-    val repository = ItemRepository(RetrofitClient.apiService)
+    val repository = ReceiveRepository(RetrofitClient.apiService)
     private val _needsState = MutableLiveData<NeedsState>()
     val needState: LiveData<NeedsState> = _needsState
     private val _isLoading = MutableLiveData<Boolean>()
@@ -59,7 +60,7 @@ class NeedsViewModel : ViewModel() {
     fun getAllItems() {
         viewModelScope.launch {
             try {
-                val result = repository.getAllItems()
+                val result = repository.getAllItems(GetDataDTO(isGetAllData = "1"))
                 result.onSuccess { item ->
                     if (item.type == EndpointConstants.Exception) {
                         val type = object : TypeToken<List<WMSExceptionMessage>>() {}.type
@@ -70,8 +71,8 @@ class NeedsViewModel : ViewModel() {
                         _needsState.value = NeedsState.Exception(exList[0].wMSMessage.toString() ?: "Exception occurred")
                         Log.d("Exception", exList[0].wMSMessage.toString())
                     } else {
-                        val type = object : TypeToken<List<ItemDTO>>() {}.type
-                        val itemList: List<ItemDTO> = Gson().fromJson(
+                        val type = object : TypeToken<List<ReceivedItemDTO>>() {}.type
+                        val itemList: List<ReceivedItemDTO> = Gson().fromJson(
                             Gson().toJson(item.entityObject),
                             type
                         )
@@ -86,17 +87,17 @@ class NeedsViewModel : ViewModel() {
             }
         }
     }
-    fun addItem(data: ItemDTO) {
+    fun addItem(data: ReceivedItemDTO) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val result = repository.insertItems(common().buildLoginRequest(data))
+                val result = repository.insertItems(common().buildReceiveRequest(data))
                 result.onSuccess { item ->
                     if (item.type!!.equals("Exception")) {
                         _needsState.value = NeedsState.Failure(item.wmsMessages.toString())
                     } else {
-                        val type = object : TypeToken<List<ItemDTO>>() {}.type
-                        val itemList: List<ItemDTO> = Gson().fromJson(
+                        val type = object : TypeToken<List<ReceivedItemDTO>>() {}.type
+                        val itemList: List<ReceivedItemDTO> = Gson().fromJson(
                             Gson().toJson(item.entityObject),
                             type
                         )

@@ -12,12 +12,17 @@ interface ApiService {
     suspend fun userLogin(
         @Body request: WMSCoreMessage
     ): Response<String>
-    @POST("Item/AddItems")
+    @POST("Receive/AddItems")
     suspend fun AddItems(
         @Body request: WMSCoreMessage
     ): Response<String>
+    @POST("Expense/AddExpense")
+    suspend fun AddExpense(
+        @Body request: WMSCoreMessage
+    ): Response<String>
 
-    @GET("Item/GetAllItems")
+    @POST("Receive/GetAllItems")
     suspend fun GetAllItems(
+        @Body request: WMSCoreMessage
     ): Response<String>
 }

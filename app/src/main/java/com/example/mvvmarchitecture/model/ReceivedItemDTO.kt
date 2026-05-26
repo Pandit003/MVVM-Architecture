@@ -2,16 +2,16 @@ package com.example.mvvmarchitecture.model
 
 import com.google.gson.annotations.SerializedName
 
-class ItemDTO(
+class ReceivedItemDTO(
 
-    @SerializedName("Id")
-    var id: Int? = null,
+    @SerializedName("ReceiveId")
+    var ReceiveId: Int? = null,
 
     @SerializedName("ItemId")
     var itemId: Int? = null,
 
-    @SerializedName("Name")
-    var name: String? = null,
+    @SerializedName("ItemName")
+    var ItemName: String? = null,
 
     @SerializedName("Quantity")
     var quantity: Double? = null,
@@ -46,11 +46,12 @@ class ItemDTO(
     @SerializedName("IndividualCost")
     var individualCost: String? = null,
 
-    @SerializedName("Description")
-    var description: String? = null,
 
     @SerializedName("isUpdate")
     var isUpdate: String? = null,
+
+    @SerializedName("CreatedBy")
+    var CreatedBy: String? = null,
 
     @SerializedName("EmptyItems")
     var emptyItems: List<Int>? = null
