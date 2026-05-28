@@ -12,4 +12,6 @@ data class GetDataDTO(
 
     @SerializedName("isGetNames")
     var isGetNames: String? = "0",
+    @SerializedName("isGetExpenses")
+    var isGetExpenses: String? = "0",
 )

@@ -97,6 +97,7 @@ class AddItemBottomSheet(
             seekBar.max = it.requiredQty!!.toInt()
             tvReceived.text = it.receiveQty.toString()
             etCost.setText(it.totalCost.toString())
+            spinnerUnit.setSelection(units.indexOf(it.unit))
             if(it.priority.equals("Low")){
                 radioGroup.check(R.id.rb_low)
             }else if(it.priority.equals("Medium")){
@@ -141,6 +142,7 @@ class AddItemBottomSheet(
             }
 
             progress.visibility = View.VISIBLE
+            btnSave.visibility = View.GONE
             btnSave.isEnabled = false
 
             val selectedPriorityId = radioGroup.checkedRadioButtonId
@@ -160,7 +162,7 @@ class AddItemBottomSheet(
 
             onSave(data)
 
-            dismiss()
+//            dismiss()
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
 
@@ -171,6 +173,7 @@ class AddItemBottomSheet(
                 btnSave.text = ""
 
                 progress.visibility = View.VISIBLE
+                btnSave.visibility = View.GONE
 
             } else {
 
@@ -181,6 +184,7 @@ class AddItemBottomSheet(
                         "Update"
 
                 progress.visibility = View.GONE
+                btnSave.visibility = View.VISIBLE
             }
         }
         viewModel.saveSuccess.observe(viewLifecycleOwner) {

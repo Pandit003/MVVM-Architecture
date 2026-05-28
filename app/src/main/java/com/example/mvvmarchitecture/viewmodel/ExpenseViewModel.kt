@@ -43,7 +43,7 @@ class ExpenseViewModel : ViewModel() {
     fun getNamesAndUnit() {
         viewModelScope.launch {
             try {
-                val result = repository.getAllItems(GetDataDTO(isGetNames = "1"))
+                val result = repository.getNames(GetDataDTO(isGetNames = "1"))
                 result.onSuccess { item ->
                     if (item.type == EndpointConstants.Exception) {
                         val type = object : TypeToken<List<WMSExceptionMessage>>() {}.type
@@ -60,7 +60,7 @@ class ExpenseViewModel : ViewModel() {
                         )
                         _availableItems.value = itemList
                         // For the list in ExpenseFragment, we show the same items or filtered ones
-                        _expenses.value = itemList
+//                        _expenses.value = itemList
                     }
                 }
             } catch (e: Exception) {
@@ -72,7 +72,7 @@ class ExpenseViewModel : ViewModel() {
     fun getAllExpenseItems() {
         viewModelScope.launch {
             try {
-                val result = repository.getAllItems(GetDataDTO(isGetAllData = "1"))
+                val result = repository.getAllItems(GetDataDTO(isGetExpenses = "1"))
                 result.onSuccess { item ->
                     if (item.type == EndpointConstants.Exception) {
                         val type = object : TypeToken<List<WMSExceptionMessage>>() {}.type
@@ -87,8 +87,6 @@ class ExpenseViewModel : ViewModel() {
                             Gson().toJson(item.entityObject),
                             type
                         )
-                        _availableItems.value = itemList
-                        // For the list in ExpenseFragment, we show the same items or filtered ones
                         _expenses.value = itemList
                     }
                 }
@@ -106,8 +104,19 @@ class ExpenseViewModel : ViewModel() {
                 val result = repository.AddExpenses(common().buildExpenseRequest(data))
                 result.onSuccess { item ->
                     if (item.type == EndpointConstants.Exception) {
-                        _expenseState.value = NeedsState.Failure("Exception from server")
+                        val type = object : TypeToken<List<WMSExceptionMessage>>() {}.type
+                        val exList: List<WMSExceptionMessage> = Gson().fromJson(
+                            Gson().toJson(item.entityObject),
+                            type
+                        )
+                        _expenseState.value = NeedsState.Exception(exList[0].wMSMessage.toString())
                     } else {
+                        val type = object : TypeToken<List<ExpenseItemDTO>>() {}.type
+                        val itemList: List<ExpenseItemDTO> = Gson().fromJson(
+                            Gson().toJson(item.entityObject),
+                            type
+                        )
+                        _expenses.value = itemList
                         _saveSuccess.value = true
                         _expenseState.value = NeedsState.Success(ProfileDTO())
                     }

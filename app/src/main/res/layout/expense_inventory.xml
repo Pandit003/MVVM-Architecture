@@ -4,214 +4,102 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="4dp"
-    app:cardCornerRadius="18dp"
-    app:cardElevation="1dp"
-    app:strokeWidth="1dp"
-    app:strokeColor="#EAEAEA">
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="14dp"
+    app:strokeWidth="0.5dp"
+    app:cardElevation="3dp"
+    app:cardBackgroundColor="?attr/customBackgroundColor">
 
     <LinearLayout
-        android:id="@+id/ll_mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="?attr/colorOnPrimary"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="10dp">
 
-        <!-- Header -->
+        <!-- Left Content -->
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-            <!-- Left -->
-            <LinearLayout
-                android:layout_width="0dp"
+            <!-- Item Name -->
+            <TextView
+                android:id="@+id/txtItemName"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:text="Cement"
+                android:textColor="#111111"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/txtItemName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cement"
-                    android:textColor="#111111"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/txtCategory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Raw Materials"
-                    android:textColor="#8A8A8A"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-            <!-- Edit -->
-            <!--<FrameLayout
-                android:id="@+id/layoutEdit"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="4dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:id="@+id/btnEdit"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/baseline_edit_24"
-                    android:tint="#757575" />
-
-            </FrameLayout>
-
-            &lt;!&ndash; Delete &ndash;&gt;
-            <FrameLayout
-                android:id="@+id/layoutDelete"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginEnd="8dp"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true">
-
-                <ImageView
-                    android:id="@+id/btnDelete"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/baseline_delete_24"
-                    android:tint="#D32F2F" />
-
-            </FrameLayout>-->
-
-            <!-- Qty Badge -->
+            <!-- Bottom Info -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_expense_badge"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingHorizontal="12dp"
-                android:paddingVertical="6dp">
+                android:layout_marginTop="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
+                <!-- Expense Qty -->
                 <TextView
                     android:id="@+id/txtExpenseQty"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_expense_badge"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="3dp"
                     android:text="-25 Kg"
                     android:textColor="#D32F2F"
-                    android:textSize="13sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <!-- Description -->
-        <TextView
-            android:id="@+id/txtDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ellipsize="end"
-            android:lineSpacingExtra="2dp"
-            android:maxLines="2"
-            android:text="Used for testing machine setup and maintenance work."
-            android:textColor="#555555"
-            android:textSize="13sp" />
-
-        <!-- Bottom Info Container -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="?attr/colorOnPrimary"
-            android:orientation="vertical"
-            android:padding="8dp">
-
-            <!-- Row -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <!-- Issued By -->
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Issued By"
-                        android:textColor="#9E9E9E"
-                        android:textSize="11sp" />
-
-                    <TextView
-                        android:id="@+id/txtIssuedBy"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="Rohit"
-                        android:textColor="#212121"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
                 <!-- Balance -->
-                <LinearLayout
+                <TextView
+                    android:id="@+id/txtBalance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginStart="10dp"
+                    android:text="Bal: 120 Kg"
+                    android:textColor="#2E7D32"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Balance"
-                        android:textColor="#9E9E9E"
-                        android:textSize="11sp" />
-
-                    <TextView
-                        android:id="@+id/txtBalance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:text="120 Kg"
-                        android:textColor="#2E7D32"
-                        android:textSize="13sp"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
+                <!-- Time -->
+                <TextView
+                    android:id="@+id/txtExpenseTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="10:30 AM"
+                    android:textColor="#888888"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
-            <!-- Time -->
-            <TextView
-                android:id="@+id/txtExpenseTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="25 May 2026 • 10:30 AM"
-                android:textColor="#9E9E9E"
-                android:textSize="11sp" />
-
         </LinearLayout>
+
+        <!-- Edit -->
+        <ImageView
+            android:id="@+id/btnEdit"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="1dp"
+            android:src="@drawable/baseline_edit_24"
+            android:tint="#616161" />
+
+        <!-- Delete -->
+ <!--       <ImageView
+            android:id="@+id/btnDelete"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
+            android:layout_marginStart="10dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="1dp"
+            android:src="@drawable/baseline_delete_24"
+            android:tint="#D32F2F" />-->
 
     </LinearLayout>
 

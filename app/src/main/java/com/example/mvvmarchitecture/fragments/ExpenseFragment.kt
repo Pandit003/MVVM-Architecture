@@ -41,9 +41,10 @@ class ExpenseFragment : Fragment(R.layout.fragment_expense), ExpenseAdapter.OnEx
         recyclerExpense.adapter = adapter
 
         viewModel.getNamesAndUnit()
+        viewModel.getAllExpenseItems()
 
         fabAdd.setOnClickListener {
-            AddExpenseBottomSheet(availableItemsList) { expenseData ->
+            AddExpenseBottomSheet(availableItemsList, ExpenseItemDTO()) { expenseData ->
                 viewModel.addExpense(expenseData)
             }.show(parentFragmentManager, "AddExpense")
         }
@@ -86,9 +87,8 @@ class ExpenseFragment : Fragment(R.layout.fragment_expense), ExpenseAdapter.OnEx
         item: List<ExpenseItemDTO>,
         position: Int
     ) {
-        AddExpenseBottomSheet(item) { updatedData ->
+        AddExpenseBottomSheet(item,item[position]) { updatedData ->
             Log.d("ItemUpdate", "Updated: ${updatedData.ItemName}")
-            updatedData.isUpdate = "1"
             updatedData.expenseId = item[position].expenseId
             updatedData.itemId = item[position].itemId
             viewModel.addExpense(updatedData)

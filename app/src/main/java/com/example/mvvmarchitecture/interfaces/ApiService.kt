@@ -25,4 +25,12 @@ interface ApiService {
     suspend fun GetAllItems(
         @Body request: WMSCoreMessage
     ): Response<String>
+    @POST("Expense/GetAllExpenses")
+    suspend fun GetAllExpenses(
+        @Body request: WMSCoreMessage
+    ): Response<String>
+    @POST("Receive/GetData")
+    suspend fun GetData(
+        @Body request: WMSCoreMessage
+    ): Response<String>
 }

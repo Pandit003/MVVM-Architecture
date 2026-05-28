@@ -182,7 +182,7 @@
         </com.google.android.material.card.MaterialCardView>
 
         <!-- BUTTON -->
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginStart="16dp"
@@ -192,24 +192,34 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSaveExpense"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="Save Expense"
+                android:text="Save"
                 android:textAllCaps="false"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="2dp"
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:backgroundTint="#111827"
                 app:cornerRadius="18dp" />
 
-            <ProgressBar
-                android:id="@+id/progressExpense"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center"
-                android:visibility="gone" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDeleteExpense"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Delete"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="2dp"
+                android:visibility="gone"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/error"
+                app:cornerRadius="18dp" />
 
-        </FrameLayout>
+        </LinearLayout>
 
     </LinearLayout>
 

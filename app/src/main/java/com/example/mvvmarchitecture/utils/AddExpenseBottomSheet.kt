@@ -9,6 +9,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.model.ExpenseItemDTO
 import com.example.mvvmarchitecture.model.ReceivedItemDTO
@@ -17,6 +18,7 @@ import com.google.android.material.textfield.TextInputLayout
 
 class AddExpenseBottomSheet(
     private val availableItems: List<ExpenseItemDTO>,
+    private val existingItem: ExpenseItemDTO,
     private val onSave: (ExpenseItemDTO) -> Unit
 ) : BottomSheetDialogFragment() {
 
@@ -25,8 +27,10 @@ class AddExpenseBottomSheet(
     private lateinit var etUnit: EditText
     private lateinit var etDescription: EditText
     private lateinit var btnSave: Button
+    private lateinit var btnDeleteExpense: Button
     private lateinit var btnClose: ImageView
     private lateinit var tilQuantity: TextInputLayout
+    private lateinit var tvTitle: TextView
 
     private var selectedItem: ExpenseItemDTO? = null
 
@@ -48,11 +52,25 @@ class AddExpenseBottomSheet(
         btnSave = view.findViewById(R.id.btnSaveExpense)
         btnClose = view.findViewById(R.id.btnClose)
         tilQuantity = view.findViewById(R.id.tilQuantity)
+        btnDeleteExpense = view.findViewById(R.id.btnDeleteExpense)
+        tvTitle = view.findViewById(R.id.tvTitle)
 
         val itemNames = availableItems.mapNotNull { it.ItemName }
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, itemNames)
         autoCompleteName.setAdapter(adapter)
 
+        if(existingItem.ItemName != null){
+            btnDeleteExpense.setVisibility(View.VISIBLE)
+            tvTitle.setText("Edit Expense")
+            btnSave.setText("Update")
+            autoCompleteName.setText(existingItem.ItemName)
+            autoCompleteName.isEnabled = false
+            etQuantity.setText(existingItem.expenseQty.toString())
+            etUnit.setText(existingItem.unit)
+            etDescription.setText(existingItem.description)
+            selectedItem = existingItem
+            tilQuantity.suffixText = "/"+selectedItem?.availableQty.toString()
+        }
         autoCompleteName.setOnItemClickListener { parent, _, position, _ ->
             val name = parent.getItemAtPosition(position) as String
             selectedItem = availableItems.find { it.ItemName == name }
@@ -74,14 +92,46 @@ class AddExpenseBottomSheet(
             }else if(quantity > selectedItem?.availableQty!!){
                 etQuantity.setError("Please enter below available quantity")
             }else{
+                if(btnSave.text.toString().equals("Update")){
+                    selectedItem?.isUpdate = "1"
+                }else{
+                    selectedItem?.isUpdate = "0"
+                }
                 val expense = ExpenseItemDTO(
                     expenseId = selectedItem?.expenseId,
                     itemId = selectedItem?.itemId,
                     ItemName = name,
                     expenseQty = quantity,
+                    availableQty = availableItems.find { it.ItemName == name }?.availableQty,
                     unit = etUnit.text.toString(),
                     description = description,
-                    category = selectedItem?.category
+                    category = selectedItem?.category,
+                    isUpdate = selectedItem?.isUpdate
+                )
+                onSave(expense)
+                dismiss()
+            }
+        }
+        btnDeleteExpense.setOnClickListener {
+            val name = autoCompleteName.text.toString()
+            val quantity = etQuantity.text.toString().toDoubleOrNull() ?: 0.0
+            val description = etDescription.text.toString()
+
+            if(quantity == 0.0){
+                etQuantity.setError("Please enter quantity")
+            }else if(quantity > selectedItem?.availableQty!!){
+                etQuantity.setError("Please enter below available quantity")
+            }else{
+                val expense = ExpenseItemDTO(
+                    expenseId = selectedItem?.expenseId,
+                    itemId = selectedItem?.itemId,
+                    ItemName = name,
+                    expenseQty = quantity,
+                    availableQty = selectedItem?.availableQty,
+                    unit = etUnit.text.toString(),
+                    description = description,
+                    category = selectedItem?.category,
+                    isUpdate = "2"
                 )
                 onSave(expense)
                 dismiss()
