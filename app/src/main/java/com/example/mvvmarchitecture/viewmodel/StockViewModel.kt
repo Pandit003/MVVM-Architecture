@@ -14,13 +14,31 @@ import com.example.mvvmarchitecture.ui.NeedsState
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class StockViewModel : ViewModel() {
 
     private val _items = MutableStateFlow<List<ReceivedItemDTO>>(emptyList())
     val items = _items.asStateFlow()
+
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
+
+    val filteredItems: StateFlow<List<ReceivedItemDTO>> = combine(_items, _searchQuery) { items, query ->
+        if (query.isBlank()) {
+            items
+        } else {
+            items.filter { item ->
+                item.ItemName?.contains(query, ignoreCase = true) == true ||
+                item.category?.contains(query, ignoreCase = true) == true
+            }
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     private val repository = StockRepository(RetrofitClient.apiService)
 
@@ -29,6 +47,10 @@ class StockViewModel : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
+
+    fun onSearchQueryChanged(query: String) {
+        _searchQuery.value = query
+    }
 
     fun getStockItems() {
         viewModelScope.launch {
