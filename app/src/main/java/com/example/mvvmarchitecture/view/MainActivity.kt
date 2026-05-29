@@ -1,25 +1,17 @@
 package com.example.mvvmarchitecture.view
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.databinding.BindingAdapter
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.example.mvvmarchitecture.R
-import com.example.mvvmarchitecture.databinding.ActivityLoginBinding
 import com.example.mvvmarchitecture.databinding.ActivityMainBinding
-import com.example.mvvmarchitecture.fragments.AnalysisFragment
+import com.example.mvvmarchitecture.fragments.StockFragment
 import com.example.mvvmarchitecture.fragments.ExpenseFragment
 import com.example.mvvmarchitecture.fragments.NeedsFragment
-import com.example.mvvmarchitecture.repository.LoginRepository
-import com.example.mvvmarchitecture.services.RetrofitClient
-import com.example.mvvmarchitecture.viewmodel.LoginViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -41,9 +33,12 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.action_needs -> loadFragment(NeedsFragment())
                 R.id.action_exp -> loadFragment(ExpenseFragment())
-                R.id.action_any -> loadFragment(AnalysisFragment())
+                R.id.action_any -> loadFragment(StockFragment())
             }
             true
+        }
+        binding.ivSearch.setOnClickListener {
+
         }
     }
     private fun loadFragment(fragment: Fragment) {

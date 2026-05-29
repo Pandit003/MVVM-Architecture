@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.adapter.ExpenseAdapter
-import com.example.mvvmarchitecture.adapter.InventoryAdapter
 import com.example.mvvmarchitecture.model.ExpenseItemDTO
 import com.example.mvvmarchitecture.model.ReceivedItemDTO
 import com.example.mvvmarchitecture.ui.NeedsState

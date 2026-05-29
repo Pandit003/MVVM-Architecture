@@ -75,7 +75,7 @@ class common {
         return message
     }
 
-    public fun confirmationAlertDialog(context : Context,type : String, message: String) {
+    public fun confirmationAlertDialog(context : Context, type : String, message: String, onConfirm: () -> Unit) {
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.alert_dialog)
 
@@ -88,6 +88,12 @@ class common {
         val btnClose = dialog.findViewById<View>(R.id.btnClose)
         val btnCancel = dialog.findViewById<Button>(R.id.btnCancel)
         val btnConfirm = dialog.findViewById<Button>(R.id.btnConfirm)
+        val tvTitle = dialog.findViewById<TextView>(R.id.tvTitle)
+        val tvMessage = dialog.findViewById<TextView>(R.id.tvMessage)
+        tvMessage.text = message
+        tvTitle.text = type
+        btnConfirm.text = "Delete"
+
 
         btnClose.setOnClickListener {
             dialog.dismiss()
@@ -98,9 +104,7 @@ class common {
         }
 
         btnConfirm.setOnClickListener {
-
-            // delete action
-
+            onConfirm()
             dialog.dismiss()
         }
 

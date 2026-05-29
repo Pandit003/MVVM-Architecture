@@ -59,7 +59,7 @@ android:background="?attr/customBackgroundColor">
     android:layout_weight="1"
     android:padding="16dp"
     android:clipToPadding="false"
-    tools:listitem="@layout/item_inventory"/>
+    tools:listitem="@layout/need_inventory"/>
 
 </LinearLayout>
 

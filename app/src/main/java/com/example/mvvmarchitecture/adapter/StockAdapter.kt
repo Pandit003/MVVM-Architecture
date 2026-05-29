@@ -1,6 +1,5 @@
 package com.example.mvvmarchitecture.adapter
 
-import android.icu.text.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvmarchitecture.R
 import com.example.mvvmarchitecture.model.ReceivedItemDTO
 import java.text.SimpleDateFormat
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
-// InventoryAdapter.kt
+// StockAdapter.kt
 
-class InventoryAdapter(
+class StockAdapter(
     private val list: MutableList<ReceivedItemDTO>,
     private val onItemClickListener: OnItemClickListener? = null
-) : RecyclerView.Adapter<InventoryAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<StockAdapter.ViewHolder>() {
     interface OnItemClickListener {
         fun onItemClick(item: ReceivedItemDTO, position: Int)
     }
@@ -27,9 +25,7 @@ class InventoryAdapter(
         val txtName = view.findViewById<TextView>(R.id.txtItemName)
         val txtDate = view.findViewById<TextView>(R.id.txtTransaction)
         val txtQty = view.findViewById<TextView>(R.id.txtQty)
-        val txtRequiredQty = view.findViewById<TextView>(R.id.txtRequiredQty)
-        val txtReceivedQty = view.findViewById<TextView>(R.id.txtReceivedQty)
-//        val txtShort = view.findViewById<TextView>(R.id.txtShortName)
+        val txtShort = view.findViewById<TextView>(R.id.txtShortName)
         val ll_mainLayout = view.findViewById<LinearLayout>(R.id.ll_mainLayout)
         fun bind(item: ReceivedItemDTO) {
             val inputFormat = SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault())
@@ -37,13 +33,10 @@ class InventoryAdapter(
 
             val date = inputFormat.parse(item.time)
             val formattedTime = outputFormat.format(date!!)
-
             txtName.text = item.ItemName
             txtDate.text = "Last Transaction: ${formattedTime}"
             txtQty.text = "${item.availableQty} ${item.unit}"
-            txtRequiredQty.text = "Req : ${item.requiredQty} ${item.unit}"
-            txtReceivedQty.text = "Rec : ${item.receiveQty} ${item.unit}"
-//            txtShort.text = item.ItemName?.firstOrNull()?.toString()?.uppercase() ?: "I"
+            txtShort.text = item.ItemName?.firstOrNull()?.toString()?.uppercase() ?: "I"
 
             // Set click listener on ll_mainLayout
             ll_mainLayout.setOnClickListener {
@@ -56,7 +49,7 @@ class InventoryAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.need_inventory, parent, false)
+            .inflate(R.layout.item_inventory, parent, false)
 
         return ViewHolder(view)
     }

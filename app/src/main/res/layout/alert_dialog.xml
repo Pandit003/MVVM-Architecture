@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:lineSpacingExtra="2dp"
-            android:text="Are you sure you want to delete this inventory item? This action cannot be undone."
+            android:text="Are you sure you want to delete this item?"
             android:textColor="#6B7280"
             android:textSize="15sp"/>
 

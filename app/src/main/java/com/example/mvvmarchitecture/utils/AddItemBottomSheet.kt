@@ -162,7 +162,7 @@ class AddItemBottomSheet(
 
             onSave(data)
 
-//            dismiss()
+            dismiss()
         }
         viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
 

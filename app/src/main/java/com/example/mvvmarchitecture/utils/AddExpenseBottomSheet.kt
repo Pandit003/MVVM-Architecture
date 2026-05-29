@@ -114,14 +114,10 @@ class AddExpenseBottomSheet(
         }
         btnDeleteExpense.setOnClickListener {
             val name = autoCompleteName.text.toString()
-            val quantity = etQuantity.text.toString().toDoubleOrNull() ?: 0.0
+            val quantity = selectedItem?.expenseQty ?: 0.0
             val description = etDescription.text.toString()
 
-            if(quantity == 0.0){
-                etQuantity.setError("Please enter quantity")
-            }else if(quantity > selectedItem?.availableQty!!){
-                etQuantity.setError("Please enter below available quantity")
-            }else{
+            common().confirmationAlertDialog(requireContext(),"Delete","Are you sure you want to delete.") {
                 val expense = ExpenseItemDTO(
                     expenseId = selectedItem?.expenseId,
                     itemId = selectedItem?.itemId,
